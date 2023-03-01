@@ -27,7 +27,7 @@ app.use('/images', express.static(path.join(__dirname, '/src', '/public')));
 
 app.get('/', (req, res) => {
   res.send(
-    '<p>Base URL: https://tobeapi.deta.dev </p><p>tobeApi Docs <a href="https://tobeapi.deta.dev/api-docs/">Swagger</a></p>'
+    '<p>Base URL: https://tobeapi-1-t6466481.deta.app/ </p><p>tobeApi Docs <a href="https://tobeapi-1-t6466481.deta.app/api-docs/">Swagger</a></p>'
   );
 });
 

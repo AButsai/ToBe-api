@@ -15,11 +15,11 @@ const uploadFirebase = async file => {
     },
   };
 
-  const responce = await bucket.upload(file, options);
+  const response = await bucket.upload(file, options);
 
   await fs.unlink(file);
 
-  return responce[0].getSignedUrl({
+  return response[0].getSignedUrl({
     action: 'read',
     expires: '01-01-2030',
   });

@@ -9,7 +9,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "https://tobeapi.deta.dev/"
+      "url": "https://tobeapi-1-t6466481.deta.app/"
     },
     {
       "url": "http://localhost:8081"
