@@ -12,8 +12,6 @@ const addProduct = async (req, res) => {
     ...req.body,
     owner: id,
   });
-
-  console.log('product :>> ', product);
   res.status(200).json({ data: { product } });
 };
 
