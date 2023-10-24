@@ -1,0 +1,1618 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "ToBeAPI",
+    "description": "REST API Application"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    {
+      "url": "https://tobeapi-1-t6466481.deta.app/"
+    },
+    {
+      "url": "http://localhost:8081"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Auth endpoints"
+    },
+    {
+      "name": "Admin",
+      "description": "Admin endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Product",
+      "description": "Product endpoints"
+    },
+    {
+      "name": "Gallery",
+      "description": "Gallery endpoints"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Email or Phone already registered",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Login's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Phone is wrong or not verify, or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Logout success"
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/user/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user's information",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/admin/users": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get user's information",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAdminUsersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/admin/:userId/update-role": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Update user role",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Update user role",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminUpdateRoleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUpdateRoleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/admin/add-to-white-list": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Add phone number to white list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Add phone number to white list",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminAddToWhiteListRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAddToWhiteListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/admin/delete-from-white-list": {
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete phone number from white list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Delete phone number from white list",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminDeleteFromWhiteListRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDeleteFromWhiteListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/product/": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get all product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token or token expired",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Product"],
+        "summary": "Add product. Depends on product role: product || banner ",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Add product",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token or token expired",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/product/:prodId": {
+      "patch": {
+        "tags": ["Product"],
+        "summary": "Update product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Update product",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/updateProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token or token expired",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Product"],
+        "summary": "Delete product",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/deleteProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token or token expired",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/gallery/": {
+      "get": {
+        "tags": ["Gallery"],
+        "summary": "Get Gallery",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GalleryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token or token expired",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/gallery/folder": {
+      "post": {
+        "tags": ["Gallery"],
+        "summary": "Add folder",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Add folder",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GalleryFolderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GalleryFolderResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/gallery/folder/:folderId": {
+      "patch": {
+        "tags": ["Gallery"],
+        "summary": "Update folder",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Update folder",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GalleryFolderUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GalleryFolderUpdateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Gallery"],
+        "summary": "Delete folder",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GalleryFolderDeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token or token expired",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/gallery/folder/images/:folderId": {
+      "post": {
+        "tags": ["Gallery"],
+        "summary": "Add images to folder",
+        "consumes": "multipart/form-data",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "upfile",
+            "type": "file"
+          }
+        ],
+        "requestBody": {
+          "description": "Add images to folder",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GalleryFolderImageAddRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GalleryFolderImageAddResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/gallery/folder/images/:folderId/:imgId": {
+      "delete": {
+        "tags": ["Gallery"],
+        "summary": "Delete images",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GalleryFolderImageDeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid token or token expired",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "phone", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Petro"
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone",
+            "example": "+38(0xx)xxx-xx-xx"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "petro@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qWerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "description": "User data",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Backend-generated unique identifier",
+                "example": "62e654c37db24cc7c05b6440"
+              },
+              "name": {
+                "type": "string",
+                "description": "Users name",
+                "example": "Petro"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "petro@gmail.com"
+              },
+              "phone": {
+                "type": "string",
+                "description": "User's phone",
+                "example": "+38(0xx)xxx-xx-xx"
+              },
+              "role": {
+                "type": "string",
+                "description": "User's role",
+                "example": "user"
+              },
+              "token": {
+                "type": "string",
+                "description": "valid token",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+              }
+            }
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["phone", "password"],
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "User's phone",
+            "example": "+38(0xx)xxx-xx-xx"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qWerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "description": "User data",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Backend-generated unique identifier",
+                "example": "62e654c37db24cc7c05b6440"
+              },
+              "name": {
+                "type": "string",
+                "description": "Users name",
+                "example": "Petro"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "petro@gmail.com"
+              },
+              "phone": {
+                "type": "string",
+                "description": "User's phone",
+                "example": "+38(0xx)xxx-xx-xx"
+              },
+              "role": {
+                "type": "string",
+                "description": "User's role",
+                "example": "user"
+              },
+              "token": {
+                "type": "string",
+                "description": "valid token",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+              }
+            }
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Backend-generated unique identifier",
+                    "example": "62e654c37db24cc7c05b6440"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Users name",
+                    "example": "Petro"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email",
+                    "example": "petro@gmail.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "User's phone",
+                    "example": "+38(0xx)xxx-xx-xx"
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "User's role",
+                    "example": "user"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "valid token",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "description": "data of created"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "description": "data of created"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetAdminUsersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Backend-generated unique identifier",
+                      "example": "62e654c37db24cc7c05b6440"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Users name",
+                      "example": "Petro"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "User's email",
+                      "format": "email",
+                      "example": "petro@gmail.com"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "description": "User's phone",
+                      "example": "+38(0xx)xxx-xx-xx"
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "valid token",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+                    },
+                    "role": {
+                      "type": "string",
+                      "description": "User's role",
+                      "example": "user"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "data of created"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "data of created"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AdminUpdateRoleRequest": {
+        "type": "object",
+        "required": "role",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "User's role",
+            "example": "user || super || banned"
+          }
+        }
+      },
+      "AdminUpdateRoleResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Backend-generated unique identifier",
+                    "example": "62e654c37db24cc7c05b6440"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Users name",
+                    "example": "Petro"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email",
+                    "example": "petro@gmail.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "User's phone",
+                    "example": "+38(0xx)xxx-xx-xx"
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "User's role",
+                    "example": "user || super || banned"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "valid token",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AdminAddToWhiteListRequest": {
+        "type": "object",
+        "required": "phone",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "Phone",
+            "example": "+38(0xx)xxx-xx-xx"
+          }
+        }
+      },
+      "AdminAddToWhiteListResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Added to white list"
+              }
+            }
+          }
+        }
+      },
+      "AdminDeleteFromWhiteListRequest": {
+        "type": "object",
+        "required": "phone",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "Phone",
+            "example": "+38(0xx)xxx-xx-xx"
+          }
+        }
+      },
+      "AdminDeleteFromWhiteListResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Deleted from white list"
+              }
+            }
+          }
+        }
+      },
+      "getProductResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Backend-generated unique identifier",
+                      "example": "62e654c37db24cc7c05b6440"
+                    },
+                    "imageURL": {
+                      "type": "string",
+                      "example": "public/products/1d642218-67e8-4a94-9e56-b996b58ed964_IMG_0193.JPG"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Title product"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Description product"
+                    },
+                    "price": {
+                      "type": "integer",
+                      "example": "Price product"
+                    },
+                    "sale": {
+                      "type": "integer",
+                      "example": "Sale product"
+                    },
+                    "vegan": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "spicy": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "novelty": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "product || banner"
+                    },
+                    "owner": {
+                      "type": "string",
+                      "example": "62e654c37db24cc7c05b6440"
+                    },
+                    "label": {
+                      "type": "string",
+                      "example": "product"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "data of created"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "data of created"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "addProductRequest": {
+        "type": "object",
+        "properties": {
+          "ifRoleProduct": {
+            "type": "object",
+            "properties": {
+              "imageProduct": {
+                "type": "file",
+                "example": "form-data"
+              },
+              "title": {
+                "type": "string",
+                "example": "Name product"
+              },
+              "description": {
+                "type": "string",
+                "example": "Description product"
+              },
+              "price": {
+                "type": "integer",
+                "example": "Price product"
+              },
+              "sale": {
+                "type": "integer",
+                "example": "Sale product"
+              },
+              "vegan": {
+                "type": "boolean",
+                "example": "boolean"
+              },
+              "spicy": {
+                "type": "boolean",
+                "example": "boolean"
+              },
+              "novelty": {
+                "type": "boolean",
+                "example": "boolean"
+              },
+              "role": {
+                "type": "string",
+                "example": "product"
+              }
+            }
+          },
+          "ifRoleBanner": {
+            "type": "object",
+            "properties": {
+              "imageProduct": {
+                "type": "file",
+                "example": "form-data"
+              },
+              "role": {
+                "type": "string",
+                "example": "banner"
+              }
+            }
+          }
+        }
+      },
+      "addProductResponse": {
+        "type": "object",
+        "properties": {
+          "ifRoleProduct": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "product": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Backend-generated unique identifier",
+                        "example": "62e654c37db24cc7c05b6440"
+                      },
+                      "imageURL": {
+                        "type": "string",
+                        "example": "https://storage.googleapis.com/tobe-photo.appspot.com/09a7829e-de00-4598-97d2-362cd22a9e3e_photo_2022-12-18_13-35-14.jpg..."
+                      },
+                      "fileName": {
+                        "type": "string",
+                        "example": "09a7829e-de00-4598-97d2-362cd22a9e3e_photo_2022-12-18_13-35-14.jpg"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Title product"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Description product"
+                      },
+                      "price": {
+                        "type": "integer",
+                        "example": 100
+                      },
+                      "sale": {
+                        "type": "integer",
+                        "example": 25
+                      },
+                      "vegan": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "spicy": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "novelty": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "role": {
+                        "type": "string",
+                        "example": "product"
+                      },
+                      "owner": {
+                        "type": "string",
+                        "example": "62e654c37db24cc7c05b6440"
+                      },
+                      "label": {
+                        "type": "string",
+                        "example": "product"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "description": "data of created"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "description": "data of created"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "ifRoleBanner": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "product": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Backend-generated unique identifier",
+                        "example": "62e654c37db24cc7c05b6440"
+                      },
+                      "imageURL": {
+                        "type": "string",
+                        "example": "https://storage.googleapis.com/tobe-photo.appspot.com/09a7829e-de00-4598-97d2-362cd22a9e3e_photo_2022-12-18_13-35-14.jpg..."
+                      },
+                      "fileName": {
+                        "type": "string",
+                        "example": "09a7829e-de00-4598-97d2-362cd22a9e3e_photo_2022-12-18_13-35-14.jpg"
+                      },
+                      "role": {
+                        "type": "string",
+                        "example": "banner"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "updateProductRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Name product"
+          },
+          "description": {
+            "type": "string",
+            "example": "Description product"
+          },
+          "price": {
+            "type": "integer",
+            "example": "Price product"
+          },
+          "sale": {
+            "type": "integer",
+            "example": "Sale product"
+          },
+          "vegan": {
+            "type": "boolean",
+            "example": true
+          },
+          "spicy": {
+            "type": "boolean",
+            "example": true
+          },
+          "novelty": {
+            "type": "boolean",
+            "example": true
+          },
+          "role": {
+            "type": "string",
+            "example": "product || banner"
+          }
+        }
+      },
+      "updateProductResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Product update"
+              }
+            }
+          }
+        }
+      },
+      "deleteProductResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Product deleted"
+              }
+            }
+          }
+        }
+      },
+      "GalleryResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "gallery": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Backend-generated unique identifier",
+                    "example": "62e654c37db24cc7c05b6440"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Gallery",
+                    "example": "Gallery"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "Admin`s id",
+                    "example": "62e654c37db24cc7c05b6440"
+                  },
+                  "folders": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "Backend-generated unique identifier",
+                          "example": "62e654c37db24cc7c05b6440"
+                        },
+                        "imageURL": {
+                          "type": "string",
+                          "example": "https://storage.googleapis.com/tobe-photo.appspot.com/09a7829e-de00-4598-97d2-362cd22a9e3e_photo_2022-12-18_13-35-14.jpg..."
+                        },
+                        "fileName": {
+                          "type": "string",
+                          "example": "09a7829e-de00-4598-97d2-362cd22a9e3e_photo_2022-12-18_13-35-14.jpg"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Folder for photo",
+                          "example": "Title folder"
+                        },
+                        "items": {
+                          "type": "array",
+                          "default": []
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "data of created"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "description": "data of created"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GalleryFolderRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Title folder"
+          }
+        }
+      },
+      "GalleryFolderResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Folder created"
+              }
+            }
+          }
+        }
+      },
+      "GalleryFolderUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Title folder"
+          }
+        }
+      },
+      "GalleryFolderUpdateResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Folder update"
+              }
+            }
+          }
+        }
+      },
+      "GalleryFolderDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Folder deleted"
+              }
+            }
+          }
+        }
+      },
+      "GalleryFolderImageAddRequest": {
+        "type": "object",
+        "properties": {
+          "images": {
+            "type": "file",
+            "example": "form-data"
+          }
+        }
+      },
+      "GalleryFolderImageAddResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Images upload"
+              }
+            }
+          }
+        }
+      },
+      "GalleryFolderImageDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Images deleted"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
